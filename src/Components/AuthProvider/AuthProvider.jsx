@@ -8,32 +8,39 @@ import {
   signOut,
 } from "firebase/auth";
 import auth from "../../Firebase/Firebase.config";
+import Loader from "../Loader/Loader";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
+  const [loading, setLoading] = useState(true);
+
   // user saved
   const [user, setUsers] = useState({});
 
   // google SingIn
   const googleLogin = () => {
+    setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
   // singUp email and password
   const signUpEmailPassword = (email, password) => {
+    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   // login with email and password
   const loginWithEmailPassword = (email, password) => {
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   // onAuthStateChanged
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
+      setLoading(false);
       setUsers(user);
     });
   }, []);
@@ -51,6 +58,7 @@ const AuthProvider = ({ children }) => {
     loginWithEmailPassword,
     logOut,
     user,
+    loading,
   };
 
   return (
