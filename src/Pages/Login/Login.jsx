@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 import { useContext } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { loginWithEmailPassword } = useContext(AuthContext);
@@ -9,15 +10,19 @@ const Login = () => {
   const handleSingIn = (e) => {
     e.preventDefault();
     const form = e.target;
+    console.log(form);
     const email = form.email.value;
     const password = form.password.value;
     loginWithEmailPassword(email, password)
       .then((res) => {
+        toast.success("Login Successful");
         navigate("/");
         console.log(res);
         form.reset();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   return (

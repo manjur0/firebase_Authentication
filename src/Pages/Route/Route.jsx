@@ -9,6 +9,7 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import UserDetails from "../Users/UserDetails";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import PriveteRoute from "../../PriveteRoute/PriveteRoute";
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +47,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/users/:id",
-        element: <UserDetails />,
+        element: (
+          <PriveteRoute>
+            <UserDetails />
+          </PriveteRoute>
+        ),
         loader: ({ params }) =>
           fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`),
       },

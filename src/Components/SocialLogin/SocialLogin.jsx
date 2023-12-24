@@ -1,23 +1,30 @@
 import { useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
+import Loader from "../Loader/Loader";
+import { toast, Toaster } from "react-hot-toast";
 
 const SocialLogin = () => {
   const { googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
+  const navigation = useNavigation();
   const handleSocialLogin = (media) => {
     media()
       .then((result) => {
+        if (navigation.state === "loading") {
+          return <Loader />;
+        }
         navigate("/");
-        console.log(result);
+        toast.success(result.user, "Login Successful");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.message);
       });
   };
 
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="mt-3 space-y-3">
         <button
           onClick={() => handleSocialLogin(googleLogin)}
