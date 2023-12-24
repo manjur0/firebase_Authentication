@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const User = ({ user: { id, name, username, email } }) => {
   console.log(id, name, username, email);
+  
   return (
     <div>
       <div className="relative h-[400px] w-[300px] rounded-lg">
